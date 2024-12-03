@@ -1,72 +1,78 @@
+using AdventOfCode.Helpers;
+
 namespace AdventOfCode.Solutions.Day1;
 
 public class Day1
 {
-    private static string filePath = "./Solutions/Day1/input.txt";
-    private static List<int> _column1 = new();
-    private static List<int> _column2 = new();
-    private static Dictionary<int, int> _occurences = new Dictionary<int, int>();
 
-    
-    
-    public static int Part1()
+    private readonly string _filePath;
+    private static readonly List<int> Column1 = new();
+    private static readonly List<int> Column2 = new();
+    private static readonly Dictionary<int, int> Occurrences = new Dictionary<int, int>();
+
+
+    public Day1(InputFilePathHelper inputFilePathHelper)
+    {
+        _filePath = inputFilePathHelper.GetInputFilePath(1);
+    }
+    public  int Part1()
     {
         ReadFromInput();
         
-        _column1.Sort();
-        _column2.Sort();
+        Column1.Sort();
+        Column2.Sort();
 
         var sum = 0;
-        for (int i = 0; i < _column1.Count; i++)
+        for (int i = 0; i < Column1.Count; i++)
         {
-            sum += Math.Abs(_column1[i] - _column2[i]);
+            sum += Math.Abs(Column1[i] - Column2[i]);
         }
 
         return sum;
     }
     
-    public static int Part2()
+    public  int Part2()
     {
         ReadFromInput();
         CountOccurencesInRightCol();
         
         var similarityScore = 0;
-        foreach (var num in _column1)
+        foreach (var num in Column1)
         {
-            if (_occurences.ContainsKey(num))
+            if (Occurrences.ContainsKey(num))
             {
-                similarityScore += num * _occurences[num];
+                similarityScore += num * Occurrences[num];
             }
         }
 
         return similarityScore;
     }
 
-    private static void CountOccurencesInRightCol()
+    private  void CountOccurencesInRightCol()
     {
-        foreach (var num in _column2)
+        foreach (var num in Column2)
         {
-            if (!_occurences.ContainsKey(num))
+            if (!Occurrences.ContainsKey(num))
             {
-                _occurences[num] = 1;
+                Occurrences[num] = 1;
             }
             else
             {
-                _occurences[num] += 1;
+                Occurrences[num] += 1;
             }
         }
     }
 
-    private static void ReadFromInput()
+    private  void ReadFromInput()
     {
-        foreach (var line in File.ReadLines(filePath))
+        foreach (var line in File.ReadLines(_filePath))
         {
             string[] columns = line.Split("   ");
 
             if (columns.Length == 2)
             {
-                _column1.Add(int.Parse(columns[0]));
-                _column2.Add(int.Parse(columns[1]));
+                Column1.Add(int.Parse(columns[0]));
+                Column2.Add(int.Parse(columns[1]));
             }
         }
     }

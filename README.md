@@ -12,10 +12,10 @@ root/
 ├── Solutions/
 │   ├── Day1/
 │   │   ├── Day1.cs
-│   │   └── input.txt //Sample
+│   │   └── input.txt 
 │   ├── Day2/
 │   │   ├── Day2.cs
-│   │   └── input.txt //Sample
+│   │   └── input.txt 
 │   └── ...
 ├── AdventOfCode.csproj
 └── README.md
@@ -36,7 +36,7 @@ The idea is to keep each day's solution encapsulated in its own class file to ma
 
 ## Input Files
 
-Due to copyright issues, the input files for the Advent of Code challenge cannot be uploaded to this repository. However, you can easily download the input files for each day directly from the [Advent of Code website](https://adventofcode.com/2024). Once you've obtained the input files, place them in the corresponding `Solutions/DayX/` folder in your local project directory, and you’ll be able to run the solutions using the provided input.
+Due to copyright issues, the input files for the Advent of Code challenge cannot be uploaded to this repository and the repository is using sample input files. However, you can easily download the input files for each day directly from the [Advent of Code website](https://adventofcode.com/2024). Once you've obtained the input files, place them in the corresponding `Solutions/DayX/` folder in your local project directory, and you’ll be able to run the solutions using the provided input.
 
 ## Planned Features
 

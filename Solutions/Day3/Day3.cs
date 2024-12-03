@@ -1,16 +1,22 @@
 using System.Text.RegularExpressions;
+using AdventOfCode.Helpers;
 
 namespace AdventOfCode.Solutions.Day3;
 
 public class Day3
 {
-    
-    private const string FILE_PATH = "./Solutions/Day3/input.txt";
+
+    private readonly string _filePath;
     private const string REGEX_PATTERN_TASK1 = @"mul\((\d+),(\d+)\)";
     private const string REGEX_PATTERN_TASK2 = @"mul\((\d+),(\d+)\)";
+
+
+    public Day3(InputFilePathHelper inputFilePathHelper)
+    {
+        _filePath = inputFilePathHelper.GetInputFilePath(3);
+    }
     
-    
-    public static int Part1()
+    public int Part1()
     {
         var result = 0;
 
@@ -29,7 +35,7 @@ public class Day3
         return result;
     }
     
-    public static int Part2()
+    public int Part2()
     {
         var result = 0;
         
@@ -50,9 +56,9 @@ public class Day3
     
     
 
-    private static string ReadInput()
+    private  string ReadInput()
     {
-        string fileContent = File.ReadAllText(FILE_PATH);
+        string fileContent = File.ReadAllText(_filePath);
         return fileContent;
     }
 }
