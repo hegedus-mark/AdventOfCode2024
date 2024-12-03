@@ -12,10 +12,10 @@ root/
 ├── Solutions/
 │   ├── Day1/
 │   │   ├── Day1.cs
-│   │   └── input.txt
+│   │   └── input.txt //Sample
 │   ├── Day2/
 │   │   ├── Day2.cs
-│   │   └── input.txt
+│   │   └── input.txt //Sample
 │   └── ...
 ├── AdventOfCode.csproj
 └── README.md
@@ -34,6 +34,10 @@ Each `DayX.cs` file contains two methods:
 
 The idea is to keep each day's solution encapsulated in its own class file to maintain organization and readability.
 
+## Input Files
+
+Due to copyright issues, the input files for the Advent of Code challenge cannot be uploaded to this repository. However, you can easily download the input files for each day directly from the [Advent of Code website](https://adventofcode.com/2024). Once you've obtained the input files, place them in the corresponding `Solutions/DayX/` folder in your local project directory, and you’ll be able to run the solutions using the provided input.
+
 ## Planned Features
 
 One of the planned features for this project is a **terminal-based application** that will allow you to easily navigate through the solutions of each day and view the corresponding answers for Part 1 and Part 2. This terminal will provide a simple interface to:
@@ -49,8 +53,9 @@ This feature is designed to provide an interactive experience while exploring th
 To run the solutions, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Open the project in your preferred C# IDE or terminal.
-3. Build and run the project. You can invoke the solutions for a specific day by running the respective methods (e.g., `Day1.Part1()`).
+2. Download the input files for each day from the [Advent of Code website](https://adventofcode.com/2024) and place them in the respective `Solutions/DayX/` folders.
+3. Open the project in your preferred C# IDE or terminal.
+4. Build and run the project. You can invoke the solutions for a specific day by running the respective methods (e.g., `Day1.Part1()`).
 
 The terminal-based navigation will be implemented soon, and you’ll be able to navigate through the solutions using simple commands.
 
