@@ -14,11 +14,10 @@ public class Day1
     public Day1(InputFilePathHelper inputFilePathHelper)
     {
         _filePath = inputFilePathHelper.GetInputFilePath(1);
+        ReadFromInput();
     }
     public  int Part1()
     {
-        ReadFromInput();
-        
         Column1.Sort();
         Column2.Sort();
 
@@ -33,7 +32,6 @@ public class Day1
     
     public  int Part2()
     {
-        ReadFromInput();
         CountOccurencesInRightCol();
         
         var similarityScore = 0;
