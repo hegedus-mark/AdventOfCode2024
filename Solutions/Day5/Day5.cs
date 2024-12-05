@@ -8,7 +8,7 @@ public class Day5
     private Dictionary<int, List<int>> _dagGraph = new Dictionary<int, List<int>>(); //Directed acyclic graph
     private List<int[]> _updatedPages = new List<int[]>();
     
-    //add
+    //remove
     
     public Day5(InputFilePathHelper inputFilePathHelper)
     {
