@@ -7,6 +7,7 @@ public class Day3
 {
 
     private readonly string _filePath;
+    private string _fileContent;
     private const string REGEX_MUL_PATTERN = @"mul\((\d+),(\d+)\)";
     private const string REGEX_DODONT_BLOCK_PATTERN = @"do(?!n't)(.*?)(?=don't|$)";
     private const string REGEX_START_TO_DONT_BLOCK_PATTERN = @"^(.*?)don't";
@@ -14,30 +15,27 @@ public class Day3
     public Day3(InputFilePathHelper inputFilePathHelper)
     {
         _filePath = inputFilePathHelper.GetInputFilePath(3);
+        _fileContent = ReadInput();
     }
     
     public int Part1()
     {
-
-        string fileContent = ReadInput();
-
-        return FindAndMultiplyMulInBlock(fileContent);
+        return FindAndMultiplyMulInBlock(_fileContent);
     }
     
     public int Part2()
     {
         int result = 0;
         
-        string fileContent = ReadInput();
 
         
         var firstBlockRegex = new Regex(REGEX_START_TO_DONT_BLOCK_PATTERN, RegexOptions.Singleline);
-        var firstBlock = firstBlockRegex.Match(fileContent);
+        var firstBlock = firstBlockRegex.Match(_fileContent);
         
         
         result += FindAndMultiplyMulInBlock(firstBlock.Value);
 
-        var remainingString = fileContent.Substring(firstBlock.Length);
+        var remainingString = _fileContent.Substring(firstBlock.Length);
         
         MatchCollection doDontBlocks = Regex.Matches(remainingString, REGEX_DODONT_BLOCK_PATTERN, RegexOptions.Singleline);
 
