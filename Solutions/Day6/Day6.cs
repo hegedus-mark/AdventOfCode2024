@@ -6,130 +6,107 @@ namespace AdventOfCode.Solutions.Day6;
 public class Day6
 {
     private readonly string _filePath;
-    
 
-    private static readonly Dictionary<char, Coords> GuardDirections = new Dictionary<char, Coords>
+
+    private static readonly List<Coord> GuardCycle = new List<Coord>()
     {
-        { '^', new Coords { X = 0, Y = -1 } }, //up
-        { '>', new Coords { X = 1, Y = 0 } }, // right
-        { 'v', new Coords { X = 0, Y = 1 } }, //down
-        { '<', new Coords { X = -1, Y = 0 } } //left
+         new Coord { X = 0, Y = -1 } , //up
+         new Coord { X = 1, Y = 0 } , // right
+         new Coord { X = 0, Y = 1 } , //down
+         new Coord { X = -1, Y = 0 }  //left
     };
 
-    private static readonly List<char> GuardCycle = GuardDirections.Keys.ToList();
 
-
-    private Coords _startingPos;
-    private char[,] _map;
+    private Coord _startingPos;
+    private Dictionary<Coord, char> _map = new Dictionary<Coord, char>();
 
     public Day6(InputFilePathHelper inputFilePathHelper)
     {
         _filePath = inputFilePathHelper.GetInputFilePath(6);
-        _map = ReadInput();
+        ReadInput();
     }
 
+    //5564
     public int Part1()
     {
-        var newPos = _startingPos;
-        var currentGuard = GetCharFromCoords(newPos);
-        var direction = GuardDirections[currentGuard];
-        var cycleCount = GuardCycle.IndexOf(currentGuard);
-        _map[newPos.Y, newPos.X] = 'X';
-        var zonesVisited = 1;
-        while (true)
-        {
-            newPos += direction;
-            if (OutOfBoundary(newPos))
-            {
-                break;
-            }
-
-            var zone = GetCharFromCoords(newPos);
-
-            if (zone == '#')
-            {
-                cycleCount = (cycleCount + 1) % GuardCycle.Count;
-                currentGuard = GuardCycle[cycleCount];
-                newPos -= direction;
-                direction = GuardDirections[currentGuard];
-            }
-            else if (zone == '.')
-            {
-                _map[newPos.Y, newPos.X] = 'X';
-                zonesVisited++;
-            }
-            
-        }
-
-        return zonesVisited;
+        return SimulateGuardMovement(_map, _startingPos, GuardCycle[0]).positions.Count();
     }
 
     public int Part2()
     {
-        var newPos = _startingPos;
-        var currentGuard = GetCharFromCoords(newPos);
-        var direction = GuardDirections[currentGuard];
-        var cycleCount = GuardCycle.IndexOf(currentGuard);
-        var cycleChanges = 0;
-        _map[newPos.Y, newPos.X] = 'X';
-        while (true)
+        var loops = 0;
+
+        var positions = SimulateGuardMovement(_map, _startingPos, GuardCycle[0]).positions;
+
+        var emptyZonesInPositions = positions.Where(p => _map[p] == '.');
+        
+        //Simulate the guard movement by placing obstacles at every visited location and placing an obstacle
+        //This won't place an obstacle at a startingPos or at a place with an obstacle and can only place one obstacle at every empty visited zone
+        foreach (var emptyZone in emptyZonesInPositions)
         {
-            newPos += direction;
-            if (OutOfBoundary(newPos))
+            _map[emptyZone] = '#';
+            if (SimulateGuardMovement(_map, _startingPos, GuardCycle[0]).isLoop)
             {
-                break;
+                loops++;
             }
 
-            var zone = GetCharFromCoords(newPos);
-
-            if (zone == '#')
-            {
-                cycleCount = (cycleCount + 1) % GuardCycle.Count;
-                currentGuard = GuardCycle[cycleCount];
-                newPos -= direction;
-                direction = GuardDirections[currentGuard];
-                cycleChanges++;
-            }
-            
+            _map[emptyZone] = '.';
         }
-        
-        
 
-        return cycleChanges / GuardCycle.Count -1;
+        return loops;
     }
 
+    private (IEnumerable<Coord> positions, bool isLoop) SimulateGuardMovement(Dictionary<Coord, char> map, Coord position, Coord direction)
+    {
+        var visited = new HashSet<(Coord pos, Coord dir)>();
+
+        while (map.ContainsKey(position) && !visited.Contains((position, direction)))
+        {
+            visited.Add((position, direction));
+            if (map.GetValueOrDefault(position + direction) == '#')
+            {
+                direction = GetNextDirection(direction);
+            }
+            else
+            {
+                position += direction;
+            }
+        }
+
+        return (
+            positions : visited.Select(s => s.pos).Distinct(),
+            isLoop: visited.Contains((position, direction))
+        );
+    }
     
-    private bool OutOfBoundary(Coords coords)
-    {
-        return coords.X < 0 || coords.X > _map.GetLength(1) - 1 
-                            || coords.Y < 0 || coords.Y > _map.GetLength(0) - 1;
-    }
+    
 
-    private char GetCharFromCoords(Coords coords)
+    private Coord GetNextDirection(Coord coord)
     {
-        return _map[coords.Y, coords.X];
+        var currentIndex = GuardCycle.IndexOf(coord);
+        var nextIndex = (currentIndex + 1) % GuardCycle.Count;
+        return GuardCycle[nextIndex];
     }
+    
 
-    private char[,] ReadInput()
+    private void ReadInput()
     {
         var lines = File.ReadLines(_filePath).ToList();
-        int rows = lines.Count;
-        int cols = lines[0].Length; 
-
-        var puzzle = new char[rows, cols];
-
-        for (int i = 0; i < rows; i++)
+        for (int y = 0; y < lines.Count; y++)
         {
-            for (int j = 0; j < cols; j++)
+            for (int x = 0; x < lines[y].Length; x++)
             {
-                puzzle[i, j] = lines[i][j];
-                if (GuardCycle.Contains(puzzle[i, j]))
+                var ch = lines[y][x];
+                var coord = new Coord { X = x, Y = y };
+                
+                if (ch == '^')
                 {
-                    _startingPos = new Coords { X = j, Y = i };
+                    _startingPos = coord;
                 }
+
+                _map[coord] = ch;
             }
         }
-
-        return puzzle;
     }
+    
 }

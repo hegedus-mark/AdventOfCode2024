@@ -7,23 +7,23 @@ public class Day4
     private readonly string _filePath;
     private char[,] _puzzle;
 
-    private static readonly Coords[] DirectionsPart1 = new Coords[]
+    private static readonly Coord[] DirectionsPart1 = new Coord[]
     {
-        new Coords { X = 0, Y = -1 },  // up
-        new Coords { X = 1, Y = -1 },  // up-right
-        new Coords { X = 1, Y = 0 },   // right
-        new Coords { X = 1, Y = 1 },   // down-right
-        new Coords { X = 0, Y = 1 },   // down
-        new Coords { X = -1, Y = 1 },  // down-left
-        new Coords { X = -1, Y = 0 },  // left
-        new Coords { X = -1, Y = -1 }  // up-left
+        new Coord { X = 0, Y = -1 },  // up
+        new Coord { X = 1, Y = -1 },  // up-right
+        new Coord { X = 1, Y = 0 },   // right
+        new Coord { X = 1, Y = 1 },   // down-right
+        new Coord { X = 0, Y = 1 },   // down
+        new Coord { X = -1, Y = 1 },  // down-left
+        new Coord { X = -1, Y = 0 },  // left
+        new Coord { X = -1, Y = -1 }  // up-left
     };
     private static readonly char[] WordToFindPart1 = new[] { 'X', 'M', 'A', 'S' };
 
-    private static readonly Coords[][] DirectionPairsPart2 = new Coords[][]
+    private static readonly Coord[][] DirectionPairsPart2 = new Coord[][]
     {
-        new Coords[] { new Coords { X = 1, Y = -1 }, new Coords { X = -1, Y = 1 } }, // up-right and down-left
-        new Coords[] { new Coords { X = 1, Y = 1 }, new Coords { X = -1, Y = -1 } }  // down-right and up-left
+        new Coord[] { new Coord { X = 1, Y = -1 }, new Coord { X = -1, Y = 1 } }, // up-right and down-left
+        new Coord[] { new Coord { X = 1, Y = 1 }, new Coord { X = -1, Y = -1 } }  // down-right and up-left
     };
 
     private static readonly char[] LettersToFindPart2 = new[] { 'M', 'S' };
@@ -49,7 +49,7 @@ public class Day4
             {
                 if (_puzzle[row, col] == WordToFindPart1[0])
                 {
-                    foundWords += FindWord(new Coords { X = col, Y = row });
+                    foundWords += FindWord(new Coord { X = col, Y = row });
                 }
             }
         }
@@ -68,7 +68,7 @@ public class Day4
             {
                 if (_puzzle[row, col] == STARTING_LETTER_PART2)
                 {
-                    foundWords += FindXShapeLetters(new Coords { X = col, Y = row });
+                    foundWords += FindXShapeLetters(new Coord { X = col, Y = row });
                 }
             }
         }
@@ -77,14 +77,14 @@ public class Day4
     }
 
 
-    private int FindWord(Coords startingCoords)
+    private int FindWord(Coord startingCoord)
     {
         var foundWords = 0;
         var foundLetters = 1;
-        var foundDirections = new List<Coords>();
+        var foundDirections = new List<Coord>();
         for (int i = 0; i < DirectionsPart1.Length; i++)
         {
-            var nextCoords = startingCoords + DirectionsPart1[i];
+            var nextCoords = startingCoord + DirectionsPart1[i];
             if (OutOfBoundary(nextCoords))
             {
                 continue;
@@ -102,7 +102,7 @@ public class Day4
             foundLetters = 2; //Already found index 0 and 1
             for (int i = foundLetters; i < WordToFindPart1.Length; i++)
             {
-                var newCoord = startingCoords + direction * i;
+                var newCoord = startingCoord + direction * i;
                 if (OutOfBoundary(newCoord))
                 {
                     break;
@@ -129,14 +129,14 @@ public class Day4
         return foundWords;
     }
 
-    private int FindXShapeLetters(Coords startingCoords)
+    private int FindXShapeLetters(Coord startingCoord)
     {
         var foundWords = 0;
         var foundLetters = 0;
 
         foreach (var directionPairs in DirectionPairsPart2)
         {
-            foundLetters += CheckDirectionPairForCorrectChars(directionPairs, startingCoords);
+            foundLetters += CheckDirectionPairForCorrectChars(directionPairs, startingCoord);
         }
 
         if (foundLetters == LETTERS_TO_FIND_PART2)
@@ -147,13 +147,13 @@ public class Day4
         return foundWords;
     }
 
-    private int CheckDirectionPairForCorrectChars(Coords[] directionPair, Coords startingCoords)
+    private int CheckDirectionPairForCorrectChars(Coord[] directionPair, Coord startingCoord)
     {
         var foundLetters = 0;
         var missingLetters = LettersToFindPart2.ToList();
         foreach (var coord in directionPair)
         {
-            var newCoord = startingCoords + coord;
+            var newCoord = startingCoord + coord;
 
             if (OutOfBoundary(newCoord))
             {
@@ -205,9 +205,9 @@ public class Day4
         return puzzle;
     }
 
-    private bool OutOfBoundary(Coords coords)
+    private bool OutOfBoundary(Coord coord)
     {
-        return coords.X < 0 || coords.X > _puzzle.GetLength(1) - 1 
-                            || coords.Y < 0 || coords.Y > _puzzle.GetLength(0) - 1;
+        return coord.X < 0 || coord.X > _puzzle.GetLength(1) - 1 
+                            || coord.Y < 0 || coord.Y > _puzzle.GetLength(0) - 1;
     }
 }

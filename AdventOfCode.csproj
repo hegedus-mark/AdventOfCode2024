@@ -12,13 +12,14 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <None Remove=".env" />
-        <Content Include=".env">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
     
     <ItemGroup>
       <PackageReference Include="dotenv.net" Version="3.2.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Solutions\Day7\Input\" />
     </ItemGroup>
 
 </Project>

@@ -398,4 +398,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-Solutions/**/input*
+Solutions/**/input_real.txt
